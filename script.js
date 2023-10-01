@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let totalAmount = 0;
 
     function fetchExpenses() {
-        fetch("/expenses")
+        fetch("http://localhost:8000/expenses")
             .then((response) => response.json())
             .then((data) => {
                 if (data.total) {
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function deleteExpense(idToDelete) {
-        fetch("/delete", {
+        fetch("http://localhost:8000/delete", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -68,58 +68,82 @@ document.addEventListener("DOMContentLoaded", function () {
         const datetime = document.getElementById("datetime").value;
         const category = document.getElementById("category").value;
 
-        // Largest ID in DB
-        fetch("/expenses")
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.transactions.length > 0) {
-                    const highestId = Math.max(...data.transactions.map((transaction) => transaction.id));
-                    const newId = highestId + 1;
+        fetch("http://localhost:8000/expenses", {
+                        method: "POST",
+                        mode: 'cors',
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            id: 1,
+                            amount,
+                            description,
+                            datetime,
+                            category,
+                        }),
+                    })
+                        .then((response) => response.json())
+                        .then(() => {
+                            fetchExpenses();
+                            expenseForm.reset();
+                        })
+                        .catch((error) => console.error(error));
 
-                    // Incrementing ID
-                    fetch("/expenses", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            id: newId,
-                            amount,
-                            description,
-                            datetime,
-                            category,
-                        }),
-                    })
-                        .then((response) => response.json())
-                        .then(() => {
-                            fetchExpenses();
-                            expenseForm.reset();
-                        })
-                        .catch((error) => console.error(error));
-                } else {
-                    // No Entry in DB
-                    fetch("/expenses", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            id: 1, 
-                            amount,
-                            description,
-                            datetime,
-                            category,
-                        }),
-                    })
-                        .then((response) => response.json())
-                        .then(() => {
-                            fetchExpenses();
-                            expenseForm.reset();
-                        })
-                        .catch((error) => console.error(error));
-                }
-            })
-            .catch((error) => console.error(error));
+        // Largest ID in DB
+        // fetch("http://localhost:8000/expenses")
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         if (data.transactions.length > 0) {
+        //             const highestId = Math.max(...data.transactions.map((transaction) => transaction.id));
+        //             const newId = highestId + 1;
+        //             console.log(data)
+
+        //             // Incrementing ID
+        //             fetch("http://localhost:8000/expenses", {
+        //                 method: "POST",
+        //                 mode: 'cors',
+        //                 headers: {
+        //                     "Content-Type": "application/json",
+        //                 },
+        //                 body: JSON.stringify({
+        //                     id: newId,
+        //                     amount,
+        //                     description,
+        //                     datetime,
+        //                     category,
+        //                 }),
+        //             })
+        //                 .then((response) => response.json())
+        //                 .then(() => {
+        //                     fetchExpenses();
+        //                     expenseForm.reset();
+        //                 })
+        //                 .catch((error) => console.error(error));
+        //         } else {
+        //             // No Entry in DB
+        //             fetch("http://localhost:8000/expenses", {
+        //                 method: "POST",
+        //                 mode: 'cors',
+        //                 headers: {
+        //                     "Content-Type": "application/json",
+        //                 },
+        //                 body: JSON.stringify({
+        //                     id: 1, 
+        //                     amount,
+        //                     description,
+        //                     datetime,
+        //                     category,
+        //                 }),
+        //             })
+        //                 .then((response) => response.json())
+        //                 .then(() => {
+        //                     fetchExpenses();
+        //                     expenseForm.reset();
+        //                 })
+        //                 .catch((error) => console.error(error));
+        //         }
+        //     })
+        //     .catch((error) => console.error(error));
     });
 
     fetchExpenses();
