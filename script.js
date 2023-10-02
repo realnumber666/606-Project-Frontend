@@ -75,7 +75,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            id: 1,
                             amount,
                             description,
                             datetime,
@@ -88,62 +87,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             expenseForm.reset();
                         })
                         .catch((error) => console.error(error));
-
-        // Largest ID in DB
-        // fetch("http://localhost:8000/expenses")
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         if (data.transactions.length > 0) {
-        //             const highestId = Math.max(...data.transactions.map((transaction) => transaction.id));
-        //             const newId = highestId + 1;
-        //             console.log(data)
-
-        //             // Incrementing ID
-        //             fetch("http://localhost:8000/expenses", {
-        //                 method: "POST",
-        //                 mode: 'cors',
-        //                 headers: {
-        //                     "Content-Type": "application/json",
-        //                 },
-        //                 body: JSON.stringify({
-        //                     id: newId,
-        //                     amount,
-        //                     description,
-        //                     datetime,
-        //                     category,
-        //                 }),
-        //             })
-        //                 .then((response) => response.json())
-        //                 .then(() => {
-        //                     fetchExpenses();
-        //                     expenseForm.reset();
-        //                 })
-        //                 .catch((error) => console.error(error));
-        //         } else {
-        //             // No Entry in DB
-        //             fetch("http://localhost:8000/expenses", {
-        //                 method: "POST",
-        //                 mode: 'cors',
-        //                 headers: {
-        //                     "Content-Type": "application/json",
-        //                 },
-        //                 body: JSON.stringify({
-        //                     id: 1, 
-        //                     amount,
-        //                     description,
-        //                     datetime,
-        //                     category,
-        //                 }),
-        //             })
-        //                 .then((response) => response.json())
-        //                 .then(() => {
-        //                     fetchExpenses();
-        //                     expenseForm.reset();
-        //                 })
-        //                 .catch((error) => console.error(error));
-        //         }
-        //     })
-        //     .catch((error) => console.error(error));
     });
 
     fetchExpenses();
