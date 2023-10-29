@@ -1,0 +1,80 @@
+body, h1, h2, ul {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial;
+    background-color: #f7f7f7; 
+    color: #333; 
+}
+
+h1 {
+    text-align: center;
+    padding: 20px;
+    background-color: #4285f4;
+    color: white; 
+}
+
+.expense-form {
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+    background-color: #fff; 
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button[type="submit"] {
+    background: #4285f4; 
+    color: white;
+    border: 1px solid #357ae8;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+}
+
+.expense-list {
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+    background-color: #fff;
+}
+
+#total-expenses {
+    font-weight: bold;
+}
+
+ul#expense-items {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul#expense-items li {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 3px;
+}
+
+h2 {
+    margin-top: 20px;
+}
