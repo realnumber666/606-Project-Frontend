@@ -40,8 +40,22 @@
     </div>
 
     <div class="expense-list">
+        <label for="month-picker">Select Month:</label>
+        <input type="month" id="month-picker">
+        <button id="edit-budget-btn">Edit Current Month Budget</button></p>
+    
         <h2>Expense List</h2>
         <p>Total Expenses: <span id="total-expenses">$0.00</span></p>
+        <p>Monthly Budget: <span id="monthly-budget">$0.00</span> 
+    
+        <div id="budgetModal" class="modal">
+            <div class="modal-content">
+                <label for="budget-input">Edit Monthly Budget:</label>
+                <input type="number" id="budget-input" step="0.01">
+                <button id="save-budget-btn">Save</button>
+            </div>
+        </div>
+    
         <ul id="expense-items"></ul>
     </div>
 
