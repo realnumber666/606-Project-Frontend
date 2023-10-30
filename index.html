@@ -1,64 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker</title>
+    <meta charset="utf-8">
+    <title>Login / Sign Up Form</title>
+    <link rel="shortcut icon" href="/assets/favicon.ico">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Expense Tracker</h1>
-
-    <div class="expense-form">
-        <h2>Add New Expense</h2>
-        <form id="expense-form">
-            <label for="amount">Amount ($):</label>
-            <input type="number" id="amount" step="0.01" required>
-            <label for="description">Description (Optional):</label>
-            <input type="text" id="description">
-            
-            <label for="datetime">Datetime:</label>
-            <input type="datetime-local" id="datetime" required>
-
-            
-            <label for="category">Category:</label>
-            <select id="category" required>
-                <option value="Transportation">Transportation</option>
-                <option value="Food">Food</option>
-                <option value="Entertainment">Entertainment</option>
-                <option value="Gadget purchase">Gadget purchase</option>
-                <option value="Utilities">Utilities</option>
-                <option value="Rent">Rent</option>
-                <option value="Medical">Medical</option>
-                <option value="Gifts">Gifts</option>
-                <option value="Other">Other</option>
-            </select>
-            
-            <button type="submit">Add Expense</button>
-        </form>
-        <div id="message" class="message"></div>
-    </div>
-
-    <div class="expense-list">
-        <label for="month-picker">Select Month:</label>
-        <input type="month" id="month-picker">
-        <button id="edit-budget-btn">Edit Current Month Budget</button></p>
-    
-        <h2>Expense List</h2>
-        <p>Total Expenses: <span id="total-expenses">$0.00</span></p>
-        <p>Monthly Budget: <span id="monthly-budget">$0.00</span> 
-    
-        <div id="budgetModal" class="modal">
-            <div class="modal-content">
-                <label for="budget-input">Edit Monthly Budget:</label>
-                <input type="number" id="budget-input" step="0.01">
-                <button id="save-budget-btn">Save</button>
+    <div class="container">
+        <form class="form" id="login">
+            <h1 class="form__title">Login</h1>
+            <div class="form__message form__message--error"></div>
+            <div class="form__input-group">
+                <input type="text" class="form__input" autofocus placeholder="Username">
+                <div class="form__input-error-message"></div>
             </div>
-        </div>
-    
-        <ul id="expense-items"></ul>
+            <div class="form__input-group">
+                <input type="password" class="form__input" autofocus placeholder="Password">
+                <div class="form__input-error-message"></div>
+            </div>
+            <button class="form__button" type="button" id="loginButton">Continue</button>
+            <p class="form__text">
+                <a class="form__link" href="./" id="linkCreateAccount">Don't have an account? Create account</a>
+            </p>
+        </form>
+        <form class="form form--hidden" id="createAccount">
+            <h1 class="form__title">Create Account</h1>
+            <div class="form__message form__message--error"></div>
+            <div class="form__input-group">
+                <input type="text" id="signupUsername" class="form__input" autofocus placeholder="Username">
+                <div class="form__input-error-message"></div>
+            </div>
+            <div class="form__input-group">
+                <input type="text" id="fullName" class="form__input" autofocus placeholder="Full Name">
+                <div class="form__input-error-message"></div>
+            </div>                      
+            <div class="form__input-group">
+                <input type="password" class="form__input" autofocus placeholder="Password">
+                <div class="form__input-error-message"></div>
+            </div>
+            <div class="form__input-group">
+                <input type="password" class="form__input" autofocus placeholder="Confirm password">
+                <div class="form__input-error-message"></div>
+            </div>
+            <button class="form__button" type="button" id="signupButton">Continue</button>
+            <p class="form__text">
+                <a class="form__link" href="./" id="linkLogin">Already have an account? Sign in</a>
+            </p>
+        </form>
     </div>
-
-    <script src="script.js"></script>
+    <script src="main.js"></script>
 </body>
-</html>

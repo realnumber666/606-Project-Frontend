@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
+    let username = localStorage.getItem("username");
     const expenseForm = document.getElementById("expense-form");
     const expenseList = document.getElementById("expense-items");
     const totalExpenses = document.getElementById("total-expenses");
     const monthPicker = document.getElementById('month-picker');
+    const editFormOpen = new Set();
 
     let totalAmount = 0;
 
@@ -23,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
 
     function fetchExpenses() {
-        fetch(`http://localhost:8000/expenses?month=${currentYearMonth}`)
+        fetch(`http://localhost:8000/expenses?month=${currentYearMonth}&user=${username}`)
             .then((response) => response.json())
             .then((data) => {
                 totalAmount = data.total;
@@ -41,10 +43,29 @@ document.addEventListener("DOMContentLoaded", function () {
         listItem.innerHTML = `
             <strong>${expense.category}:</strong> $${expense.amount.toFixed(2)} (${expense.datetime})
             <br>Description: ${expense.description || "N/A"}
+            <button class="edit-button" data-id="${expense.record_id}">Edit</button>
             <button class="delete-button" data-id="${expense.record_id}">Delete</button>
         `;
         expenseList.appendChild(listItem);
-
+    
+        const editButtons = listItem.getElementsByClassName("edit-button");
+        for (const editButton of editButtons) {
+            editButton.addEventListener("click", (e) => {
+                e.preventDefault();
+                const idToEdit = parseInt(e.target.getAttribute("data-id"));
+    
+                if (editFormOpen.has(idToEdit)) {
+                    const editForm = listItem.querySelector("form");
+                    editForm.remove();
+                    editFormOpen.delete(idToEdit);
+                } else {
+                    const editForm = createEditForm(expense);
+                    listItem.appendChild(editForm);
+                    editFormOpen.add(idToEdit);
+                }
+            });
+        }
+    
         const deleteButtons = listItem.getElementsByClassName("delete-button");
         for (const deleteButton of deleteButtons) {
             deleteButton.addEventListener("click", (e) => {
@@ -53,6 +74,63 @@ document.addEventListener("DOMContentLoaded", function () {
                 deleteExpense(idToDelete);
             });
         }
+    }
+    
+    function createEditForm(expense) {
+        const editForm = document.createElement("form");
+        editForm.innerHTML = `
+            <label for="edit-amount">Amount:</label>
+            <input type="number" id="edit-amount" value="${expense.amount}" step="0.01" required>
+            <label for="edit-description">Description:</label>
+            <input type="text" id="edit-description" value="${expense.description}">
+            <label for="edit-datetime">Date and Time:</label>
+            <input type="datetime-local" id="edit-datetime" value="${expense.datetime}" required>
+            <label for="edit-category">Category:</label>
+            <select id="edit-category" required>
+                <option value="Transportation">Transportation</option>
+                <option value="Food">Food</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Gadget purchase">Gadget purchase</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Rent">Rent</option>
+                <option value="Medical">Medical</option>
+                <option value="Gifts">Gifts</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="hidden" id="edit-expense-id" value="${expense.record_id}"> <!-- Hidden input for expense.id -->
+            <button type="submit">Save</button>
+        `;
+    
+        editForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+    
+            const updatedExpense = {
+                id: parseInt(document.getElementById("edit-expense-id").value),
+                amount: parseFloat(document.getElementById("edit-amount").value),
+                description: document.getElementById("edit-description").value,
+                datetime: document.getElementById("edit-datetime").value,
+                category: document.getElementById("edit-category").value,
+            };
+    
+            fetch(`http://localhost:8000/expenses/${updatedExpense.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedExpense),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.status === 200) {
+                        fetchExpenses(); 
+                    } else {
+                        console.error(data.data.error_msg);
+                    }
+                })
+                .catch((error) => console.error(error));
+        });
+    
+        return editForm;
     }
 
     function deleteExpense(idToDelete) {
@@ -90,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
+                            username,
                             amount,
                             description,
                             datetime,
@@ -116,13 +195,12 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         
-        const userID = 1;
         const currentDate = new Date();
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth() + 1;
 
         const data = {
-            UserID: userID,
+            User: username,
             Year: year,
             Month: month,
             TotalAmount: newBudget
@@ -163,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function fetchMonthlyBudget(currentYearMonth, user_id) {
-        fetch(`http://localhost:8000/monthly_budget?month=${currentYearMonth}&user_id=${user_id}`)
+        fetch(`http://localhost:8000/monthly_budget?month=${currentYearMonth}&user=${username}`)
             .then((response) => response.json())
             .then((data) => {
                 if (data.status === 200) {
