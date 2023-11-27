@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
         for (const editButton of editButtons) {
             editButton.addEventListener("click", (e) => {
                 e.preventDefault();
-                const idToEdit = parseInt(e.target.getAttribute("data-id"));
+                const idToEdit = e.target.getAttribute("data-id");
     
                 if (editFormOpen.has(idToEdit)) {
                     const editForm = listItem.querySelector("form");
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
         for (const deleteButton of deleteButtons) {
             deleteButton.addEventListener("click", (e) => {
                 e.preventDefault();
-                const idToDelete = parseInt(e.target.getAttribute("data-id"));
+                const idToDelete = e.target.getAttribute("data-id");
                 deleteExpense(idToDelete);
             });
         }
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
     
             const updatedExpense = {
-                id: parseInt(document.getElementById("edit-expense-id").value),
+                id: document.getElementById("edit-expense-id").value,
                 amount: parseFloat(document.getElementById("edit-amount").value),
                 description: document.getElementById("edit-description").value,
                 datetime: document.getElementById("edit-datetime").value,
