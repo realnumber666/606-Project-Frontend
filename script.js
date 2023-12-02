@@ -22,7 +22,29 @@ document.addEventListener("DOMContentLoaded", function () {
         fetchExpenses();
         fetchMonthlyBudget(currentYearMonth, 1);
     });
-    
+
+    document.getElementById('category-picker').addEventListener('change', function() {
+        var selectedCategory = this.value;
+        fetchExpensesForCategory(selectedCategory);
+    });
+
+    function fetchExpensesForCategory(category) {
+        if (category === "All") {
+            fetchExpenses()
+        } else {
+            fetch(`http://localhost:8000/expenses?month=${currentYearMonth}&user=${username}&category=${category}`)
+            .then(response => response.json())
+            .then(data => {
+                totalAmount = data.total;
+                totalExpenses.textContent = `$${totalAmount.toFixed(2)}`;
+                expenseList.innerHTML = "";
+                data.transactions.forEach((transaction) => {
+                    displayExpense(transaction);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        } 
+    }
 
     function fetchExpenses() {
         fetch(`http://localhost:8000/expenses?month=${currentYearMonth}&user=${username}`)
